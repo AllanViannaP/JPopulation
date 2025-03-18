@@ -19,8 +19,7 @@ A Laravel-based application to import and display Japanese population data from 
 
 ### **1. Clone the Repository | リポジトリをクローン**  
 ```sh
-git clone https://github.com/your-repo.git  
-cd your-repo  
+git clone https://github.com/AllanViannaP/JPopulation.git
 ```
 ### **2. Install Dependencies | 依存関係をインストール**  
 ```sh
