@@ -19,6 +19,8 @@ return new class extends Migration
             
             // Automatically set the creation timestamp
             $table->timestamp('created_at')->useCurrent()->comment('Record creation timestamp');
+            $table->timestamp('updated_at')->nullable()->comment('Record update timestamp');
+
         });
     }
 
