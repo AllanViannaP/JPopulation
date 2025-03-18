@@ -6,6 +6,13 @@
 <div class="container">
     <h2 class="text-center mb-4">Japan Population Search</h2>
 
+    <!-- Warning message if no population data exists -->
+    @if(!$hasData)
+        <div class="alert alert-warning text-center">
+            No population data found. Please <a href="{{ route('import.form') }}" class="alert-link">import CSV files</a>.
+        </div>
+    @endif
+
     <!-- Form to select Prefecture and Year -->
     <form action="{{ route('population.search') }}" method="GET">
         <div class="row">

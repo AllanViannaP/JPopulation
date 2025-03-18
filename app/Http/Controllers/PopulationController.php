@@ -15,11 +15,14 @@ class PopulationController extends Controller
     {
         // Get all prefectures
         $prefectures = Prefecture::orderBy('name')->get();
-
+    
         // Get all distinct years from the population data
         $years = PopulationData::select('year')->distinct()->orderBy('year', 'desc')->pluck('year');
-
-        return view('index', compact('prefectures', 'years'));
+        
+        // Check if there is any data in the database
+        $hasData = PopulationData::exists();
+    
+        return view('index', compact('prefectures', 'years', 'hasData'));
     }
 
     /**
