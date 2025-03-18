@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Prefecture;
 use App\Models\PopulationData;
+use App\Models\CsvImport;
 use Illuminate\Support\Facades\DB;
 
 class CsvImportController extends Controller
@@ -30,11 +31,19 @@ class CsvImportController extends Controller
         // Get the file path
         $file = $request->file('csv_file');
         $filePath = $file->getPathname();
+        $fileName = $file->getClientOriginalName();
+
+        // Save CSV file info in the database
+        $csvImport = CsvImport::create([
+            'filename' => $fileName,
+            'status' => 'pending',
+        ]);
 
         // Open the file with the correct encoding (Shift-JIS)
         $handle = fopen($filePath, 'r');
 
         if (!$handle) {
+            $csvImport->update(['status' => 'failed']);
             return back()->with('error', 'Failed to open CSV file.');
         }
 
@@ -51,6 +60,7 @@ class CsvImportController extends Controller
 
         if (!isset($years)) {
             fclose($handle);
+            $csvImport->update(['status' => 'failed']);
             return back()->with('error', 'Invalid CSV format. Could not detect the year headers.');
         }
 
@@ -86,11 +96,13 @@ class CsvImportController extends Controller
 
             fclose($handle);
             DB::commit();
+            $csvImport->update(['status' => 'completed']);
             return back()->with('success', 'CSV imported successfully!');
 
         } catch (\Exception $e) {
             DB::rollBack();
             fclose($handle);
+            $csvImport->update(['status' => 'failed']);
             return back()->with('error', 'Error importing CSV: ' . $e->getMessage());
         }
     }

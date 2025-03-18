@@ -26,22 +26,22 @@ class CsvImportService
         $handle = fopen($filePath, 'r');
 
         if (!$handle) {
-            throw new Exception("Erro ao abrir o arquivo CSV.");
+            throw new Exception("Error opening the CSV file.");
         }
 
-        // Ler e converter a primeira linha do cabeçalho
+        // Read and convert the first header line
         $header = fgetcsv($handle, 1000, ",");
         $header = array_map(fn($col) => mb_convert_encoding($col, "UTF-8", "SJIS-win"), $header);
 
         while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-            // Converter cada coluna do CSV
+            // Convert each CSV column
             $data = array_map(fn($col) => mb_convert_encoding($col, "UTF-8", "SJIS-win"), $data);
 
             $prefectureName = $data[0];
             $year = (int)$data[1];
             $population = (int)$data[2];
 
-            // Buscar a prefeitura usando Doctrine
+            // Search for the prefecture using Doctrine
             $prefecture = $this->entityManager->getRepository(Prefecture::class)
                 ->findOneBy(['name' => $prefectureName]);
 
