@@ -46,6 +46,8 @@ class PopulationController extends Controller
             ->where('year', $selectedYear)
             ->value('population');
 
-        return view('index', compact('prefectures', 'years', 'selectedPrefecture', 'selectedYear', 'population'));
+        $hasData = PopulationData::exists();
+
+        return view('index', compact('prefectures', 'years', 'selectedPrefecture', 'selectedYear', 'population', 'hasData'));
     }
 }
