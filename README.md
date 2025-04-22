@@ -11,7 +11,6 @@ A Laravel-based application to import and display Japanese population data from 
 - [Laravel](https://laravel.com/)  
 - [PHPMyAdmin](https://www.phpmyadmin.net/)  
 - [Bootstrap](https://getbootstrap.com/)  
-- [Doctrine](https://www.doctrine-project.org/)  
 
 ---
 
